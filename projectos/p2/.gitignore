@@ -1,1 +1,4 @@
 *.pyc
+foo*
+vgcore.*
+proj2
