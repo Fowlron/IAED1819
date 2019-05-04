@@ -1,3 +1,15 @@
+/*******************************************************************************
+* Projeto 2 IAED1819: contact_manager.c                                        *
+* Neste projeto tenciona-se criar um sistema de gestao de contactos, com o     *
+* qual se interage atraves de comandos.                                        *
+*                                                                              *
+*                                                 Pedro Godinho - 93608 - LETI *
+********************************************************************************
+/*******************************************************************************
+* Este ficheiro contem a implementacao das funcoes declaradas no ficheiro      *
+* contact_manager.h                                                            *
+*******************************************************************************/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -19,7 +31,7 @@ Contact *find_contact_by_name(ContactList *cl, char *name) {
 void get_domain_from_email(char *email, char *domain) {
     int i;
     for (i = 0; email[i] != '@'; i++); /* procurar @ */
-    strcpy(domain, email+i+1); /* copiar o que vem a frente do arroba par domain */
+    strcpy(domain, email+i+1); /* copiar o que vem a frente do arroba para domain */
 }
 
 

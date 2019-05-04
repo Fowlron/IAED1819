@@ -1,3 +1,13 @@
+/*******************************************************************************
+* Projeto 2 IAED1819: contact_list.c                                           *
+* Neste projeto tenciona-se criar um sistema de gestao de contactos, com o     *
+* qual se interage atraves de comandos.                                        *
+*                                                                              *
+*                                                 Pedro Godinho - 93608 - LETI *
+********************************************************************************
+* Este fincheiro contem a implementacao das funcoes definidas em               *
+*******************************************************************************/
+
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -31,7 +41,6 @@ void destroy_contact_list(ContactList *cl) {
         /* guardar o proximo elemento para usar depois de libertar a head */
         next = cl->head->next;
 
-        /* libertar o contacto antes da head */
         destroy_node(cl->head);
         cl->head = next;
     }
@@ -46,8 +55,7 @@ void append_to_contact_list(ContactList *cl, Contact c) {
     new_tail->previous = cl->tail;
     new_tail->c = c;
 
-    /* se a lista e vazia, a nova tail tambem e a head */
-    if (cl->head == NULL) 
+    if (cl->head == NULL) /* se a lista e vazia, a nova tail tambem e a head */
         cl->head = new_tail;
     else /* caso contrario, atualizar a tail antiga */
         cl->tail->next = new_tail;
