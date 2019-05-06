@@ -61,6 +61,7 @@ void main_loop() {
 * Ponto de entrada no programa.                                                *
 *******************************************************************************/
 int main() {
+    printf("TEST\n");
     main_loop();
     return 0;
 }
