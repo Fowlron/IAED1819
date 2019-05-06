@@ -24,7 +24,7 @@
 * Funcao responsavel pelo loop principal do programa. A cada iteracao, a       *
 * funcao respetiva ao comando dado e chamada.                                  *
 *******************************************************************************/
-void main_loop() {
+void main_loop() {    
     char command;
     ContactList *contact_list = make_contact_list();
 

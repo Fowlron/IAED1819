@@ -10,6 +10,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "contact_manager.h"
 
@@ -61,4 +62,15 @@ void append_to_contact_list(ContactList *cl, Contact c) {
         cl->tail->next = new_tail;
     
     cl->tail = new_tail;
+}
+
+
+Contact *get_contact_by_name(ContactList *cl, char *name) {
+    Node *current;
+    /* percorrer a lista, e retornar um ponteiro para o contacto, caso encontrado */
+    for (current = cl->head; current != NULL; current = current->next) {
+        if (strcmp(current->c.name, name) == 0)
+            return &(current->c);
+    }
+    return NULL;
 }

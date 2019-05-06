@@ -16,17 +16,6 @@
 #include "contact_manager.h"
 
 
-Contact *find_contact_by_name(ContactList *cl, char *name) {
-    Node *current;
-    /* percorrer a lista, e retornar um ponteiro para o contacto, caso encontrado */
-    for (current = cl->head; current != NULL; current = current->next) {
-        if (strcmp(current->c.name, name) == 0)
-            return &(current->c);
-    }
-    return NULL;
-}
-
-
 void get_domain_from_email(char *email, char *domain) {
     int i;
     for (i = 0; email[i] != '@'; i++); /* procurar @ */
@@ -53,7 +42,7 @@ void command_add_contact(ContactList *cl) {
     }
 
     /* procurar um contacto com o mesmo nome e dar erro se encontrado */
-    if (find_contact_by_name(cl, name)) {
+    if (get_contact_by_name(cl, name)) {
         printf("Nome existente.\n");
         return;
     }
@@ -94,7 +83,7 @@ void command_find_contact(ContactList *cl) {
         printf("Erro a ler do standard input. \n");
     }
 
-    if ((contact = find_contact_by_name(cl, name))) 
+    if ((contact = get_contact_by_name(cl, name))) 
         print_contact(*contact);
     else
         printf("Nome inexistente.\n");
@@ -116,7 +105,7 @@ void command_remove_contact(ContactList *cl) {
         printf("Erro a ler do standard input. \n");
     }
 
-    if (!find_contact_by_name(cl, name)) {
+    if (!get_contact_by_name(cl, name)) {
         printf("Nome inexistente.\n");
         return;
     }
@@ -162,14 +151,13 @@ void command_change_email(ContactList *cl) {
     }
 
     /* verificar se o contacto existe */
-    if (!(contact = find_contact_by_name(cl, name))) {
+    if (!(contact = get_contact_by_name(cl, name))) {
         printf("Nome inexistente.\n");
         return;
     }
 
     /* temos de realocar a memoria do email do contacto, ja que o numero de caracteres pode variar */
-    free(contact->email);
-    contact->email = malloc(sizeof(char) * (strlen(email) + 1));
+    contact->email = realloc(contact->email, sizeof(char) * strlen(email) + 1);
     strcpy(contact->email, email);
 }
 

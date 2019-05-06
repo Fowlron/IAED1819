@@ -96,4 +96,20 @@ void destroy_contact_list(ContactList *cl);
 *******************************************************************************/
 void append_to_contact_list(ContactList *cl, Contact c);
 
+
+/*******************************************************************************
+* Funcao que encontra um contacto atraves do seu nome.                         *
+*                                                                              *
+********************************************************************************
+* Args:                                                                        *
+*     ContactList *cl: a lista na qual procurar o contacto                     *
+*     char *name: o nome pelo qual procurar                                    *
+*                                                                              *
+* Returns:                                                                     *
+*     Contact*: um ponteiro para o contacto encontrado (ou NULL se nao         *
+*               existir                                                        *
+*******************************************************************************/
+Contact *get_contact_by_name(ContactList *cl, char *name);
+
+
 #endif
