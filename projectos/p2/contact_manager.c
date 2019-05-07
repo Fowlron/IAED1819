@@ -42,7 +42,7 @@ void command_add_contact(ContactList *cl) {
     }
 
     /* procurar um contacto com o mesmo nome e dar erro se encontrado */
-    if (get_contact_by_name(cl, name)) {
+    if (get_node_by_name(cl, name)) {
         printf("Nome existente.\n");
         return;
     }
@@ -70,7 +70,7 @@ void command_print_contact_list(ContactList *cl) {
 
 void command_find_contact(ContactList *cl) {
     char line[MAX_STR_NAME + 1], name[MAX_STR_NAME + 1];
-    Contact *contact;
+    Node *node;
 
     /* ler linha do standard input com fgets */
     if (fgets(line, sizeof(line), stdin)) {
@@ -83,8 +83,8 @@ void command_find_contact(ContactList *cl) {
         printf("Erro a ler do standard input. \n");
     }
 
-    if ((contact = get_contact_by_name(cl, name))) 
-        print_contact(*contact);
+    if ((node = get_node_by_name(cl, name))) 
+        print_contact(node->c);
     else
         printf("Nome inexistente.\n");
 }
@@ -92,7 +92,6 @@ void command_find_contact(ContactList *cl) {
 
 void command_remove_contact(ContactList *cl) {
     char line[MAX_STR_NAME + 1], name[MAX_STR_NAME + 1];
-    Node *current;
 
     /* ler linha do standard input com fgets */
     if (fgets(line, sizeof(line), stdin)) {
@@ -105,39 +104,19 @@ void command_remove_contact(ContactList *cl) {
         printf("Erro a ler do standard input. \n");
     }
 
-    if (!get_contact_by_name(cl, name)) {
+    if (!get_node_by_name(cl, name)) {
         printf("Nome inexistente.\n");
         return;
     }
 
-    /* iterar a lista ate encontrar o que corresponde */
-    for (current = cl->head; current != NULL; current = current->next) {
-        if (strcmp(current->c.name, name) == 0) {
-            /* remover o node da lista, alterando o next e previous dos nodes circundantes */
-            if (current->previous != NULL)
-                current->previous->next = current->next;
-            if (current->next != NULL)
-                current->next->previous = current->previous;
-
-            /* se o node for a head ou a tail, atualizar a estrutura da lista */
-            if (current == cl->head)
-                cl->head = current->next;
-            if (current == cl->tail)
-                cl->tail = current->previous;
-
-            /* libertar a memoria do node */
-            
-            destroy_node(current); /* quebra o for loop, ja que perdemos o current->next, mas fazemos return a seguir */
-            return;
-        }
-    }
+    remove_node_from_list(cl, name);
 }
 
 
 void command_change_email(ContactList *cl) {
     char line[MAX_STR_NAME + MAX_STR_EMAIL + 1];
     char name[MAX_STR_NAME + 1], email[MAX_STR_EMAIL + 1];
-    Contact *contact;
+    Node *node;
 
     /* ler linha do standard input com fgets */
     if (fgets(line, sizeof(line), stdin)) {
@@ -151,14 +130,14 @@ void command_change_email(ContactList *cl) {
     }
 
     /* verificar se o contacto existe */
-    if (!(contact = get_contact_by_name(cl, name))) {
+    if (!(node = get_node_by_name(cl, name))) {
         printf("Nome inexistente.\n");
         return;
     }
 
     /* temos de realocar a memoria do email do contacto, ja que o numero de caracteres pode variar */
-    contact->email = realloc(contact->email, sizeof(char) * strlen(email) + 1);
-    strcpy(contact->email, email);
+    node->c.email = realloc(node->c.email, sizeof(char) * strlen(email) + 1);
+    strcpy(node->c.email, email);
 }
 
 

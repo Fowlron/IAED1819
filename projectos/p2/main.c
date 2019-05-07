@@ -16,7 +16,6 @@
 #include <string.h>
 
 #include "contact_manager.h"
-/* nao necessario (ja incluido em contact_manager.h), mas mantido por clareza */
 #include "contact_list.h"
 
 

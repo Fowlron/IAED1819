@@ -65,12 +65,33 @@ void append_to_contact_list(ContactList *cl, Contact c) {
 }
 
 
-Contact *get_contact_by_name(ContactList *cl, char *name) {
+void remove_node_from_list(ContactList *cl, char *name) {
+    Node *node = get_node_by_name(cl, name);
+
+    /* remover o node da lista, alterando o next e previous dos nodes circundantes */
+    if (node->previous != NULL)
+        node->previous->next = node->next;
+    if (node->next != NULL)
+        node->next->previous = node->previous;
+
+    /* se o node for a head ou a tail, atualizar a estrutura da lista */
+    if (node == cl->head)
+        cl->head = node->next;
+    if (node == cl->tail)
+        cl->tail = node->previous;
+
+    /* libertar a memoria do node */
+    destroy_node(node);
+    return;
+}
+
+
+Node *get_node_by_name(ContactList *cl, char *name) {
     Node *current;
     /* percorrer a lista, e retornar um ponteiro para o contacto, caso encontrado */
     for (current = cl->head; current != NULL; current = current->next) {
         if (strcmp(current->c.name, name) == 0)
-            return &(current->c);
+            return current;
     }
     return NULL;
 }

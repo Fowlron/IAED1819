@@ -97,6 +97,9 @@ void destroy_contact_list(ContactList *cl);
 void append_to_contact_list(ContactList *cl, Contact c);
 
 
+void remove_node_from_list(ContactList *cl, char *name);
+
+
 /*******************************************************************************
 * Funcao que encontra um contacto atraves do seu nome.                         *
 *                                                                              *
@@ -109,7 +112,7 @@ void append_to_contact_list(ContactList *cl, Contact c);
 *     Contact*: um ponteiro para o contacto encontrado (ou NULL se nao         *
 *               existir                                                        *
 *******************************************************************************/
-Contact *get_contact_by_name(ContactList *cl, char *name);
+Node *get_node_by_name(ContactList *cl, char *name);
 
 
 #endif
