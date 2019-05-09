@@ -16,8 +16,9 @@
 
 unsigned int hash(char* str) {
 	unsigned int hash = 16777619;
-    while (*str)
+    while (*str) {
         hash = (hash * 0x811C9DC5) ^ *str++;
+    }
 	return hash;
 }
 
