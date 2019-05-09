@@ -24,8 +24,8 @@ void get_domain_from_email(char *email, char *domain) {
 
 
 void command_add_contact(HashedContactList *cl, DomainHashTable *dt) {
-    /* o tamanho maximo da linha e o tamanho maximo das 3 strings + 1 para '\0' */
-    char line[MAX_STR_NAME + MAX_STR_EMAIL + MAX_STR_TEL + 1];
+    /* o tamanho maximo da linha e o tamanho maximo das 3 strings, mais um por espaço, mais 2 para "\n\0" no fim */
+    char line[MAX_STR_NAME + 1 + MAX_STR_EMAIL + 1 + MAX_STR_TEL + 2];
     char name[MAX_STR_NAME + 1], email[MAX_STR_EMAIL + 1], tel[MAX_STR_TEL + 1];
     char domain[MAX_STR_EMAIL + 1];
 
@@ -40,6 +40,7 @@ void command_add_contact(HashedContactList *cl, DomainHashTable *dt) {
         }
     } else {
         printf("Erro a ler do standard input. \n");
+        return;
     }
 
     /* procurar um contacto com o mesmo nome e dar erro se encontrado */
@@ -66,25 +67,23 @@ void command_add_contact(HashedContactList *cl, DomainHashTable *dt) {
 
 void command_print_contact_list(HashedContactList *cl) {
     Node *current;
-    for (current = cl->head; current != NULL; current = current->next) {
+    for (current = cl->head; current; current = current->next) {
         print_contact(current->c);
     }
 }
 
 
 void command_find_contact(HashedContactList *cl) {
-    char line[MAX_STR_NAME + 1], name[MAX_STR_NAME + 1];
+    char name[MAX_STR_NAME + 1];
     Node *node;
 
     /* ler linha do standard input com fgets */
-    if (fgets(line, sizeof(line), stdin)) {
-        /* formatar a linha para a variavel */
-        if (sscanf(line, "%s", name) != 1) {
-            printf("Erro ao procurar contacto (linha mal formatada?)\n");
-            return;
-        }
+    if (fgets(name, sizeof(name), stdin)) {
+        /* remover o '\n' */
+        name[strlen(name) - 1] = '\0';
     } else {
         printf("Erro a ler do standard input. \n");
+        return;
     }
 
     if ((node = get_node_by_name(cl, name))) 
@@ -95,19 +94,17 @@ void command_find_contact(HashedContactList *cl) {
 
 
 void command_remove_contact(HashedContactList *cl, DomainHashTable *dt) {
-    char line[MAX_STR_NAME + 1], name[MAX_STR_NAME + 1];
+    char name[MAX_STR_NAME + 2];
     char domain[MAX_STR_EMAIL + 1];
     Node *node;
 
     /* ler linha do standard input com fgets */
-    if (fgets(line, sizeof(line), stdin)) {
-        /* formatar a linha para a variavel */
-        if (sscanf(line, "%s", name) != 1) {
-            printf("Erro ao remover contacto (linha mal formatada?)\n");
-            return;
-        }
+    if (fgets(name, sizeof(name), stdin)) {
+        /* remover o '\n' */
+        name[strlen(name) - 1] = '\0';
     } else {
         printf("Erro a ler do standard input. \n");
+        return;
     }
 
     if (!(node = get_node_by_name(cl, name))) {
@@ -136,6 +133,7 @@ void command_change_email(HashedContactList *cl, DomainHashTable *dt) {
         }
     } else {
         printf("Erro a ler do standard input. \n");
+        return;
     }
 
     /* verificar se o contacto existe */
@@ -158,17 +156,15 @@ void command_change_email(HashedContactList *cl, DomainHashTable *dt) {
 
 void command_count_email_domain(DomainHashTable *dt) {
     /* o tamanho maximo de um dominio e MAX_STR_EMAIL - 1 (@) - 1 (caracter minimo do local) + 1 ('\0') */
-    char line[MAX_STR_EMAIL+1], domain[MAX_STR_EMAIL + 1];
+    char domain[MAX_STR_EMAIL + 1];
 
     /* ler linha do standard input com fgets */
-    if (fgets(line, sizeof(line), stdin)) {
-        /* formatar a linha para a variavel */
-        if (sscanf(line, "%s", domain) != 1) {
-            printf("Erro ao contar dominios de email (linha mal formatada?)\n");
-            return;
-        }
+    if (fgets(domain, sizeof(domain), stdin)) {
+        /* remover o '\n' */
+        domain[strlen(domain) - 1] = '\0';
     } else {
         printf("Erro a ler do standard input. \n");
+        return;
     }
 
     printf("%s:%d\n", domain, get_from_domain_table(dt, domain));

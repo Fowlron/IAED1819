@@ -8,35 +8,13 @@
 * Este ficheiro contem as funcoes main() e main_loop(), responsaveis pelo      *
 * inicio do programa, bem como pelo loop principal, no qual o utilizador       *
 * inseres os comandos a usar.                                                  *
-*                                                                              *
 *******************************************************************************/
 
-#include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
 
 #include "contact_manager.h"
 #include "contact_list.h"
-
-
-
-
-
 #include "domain_table.h"
-
-void print_table(DomainHashTable *ht) {
-    int i;
-    Item *current;
-    for (i = 0; i < DT_SIZE; i++) {
-        if (*(ht->items + i))
-            printf("Hash: %d | ", i);
-        for (current = *(ht->items + i); current; current = current->next_collision) {
-            printf("%s: %d ", current->domain, current->num);
-        }
-        if (*(ht->items + i))
-            printf("\n");
-    }
-}
 
 /*******************************************************************************
 * Funcao responsavel pelo loop principal do programa. A cada iteracao, a       *
@@ -70,11 +48,6 @@ void main_loop() {
             case 'c':
                 command_count_email_domain(domain_hash_table);
                 break;
-            case 'b':
-                print_hash_table(hashed_contact_list);
-                break;
-            case 'd':
-                print_table(domain_hash_table);
         }
     }
 

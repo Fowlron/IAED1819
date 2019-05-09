@@ -37,7 +37,8 @@ void get_domain_from_email(char *email, char *domain);
 *                                                                              *
 ********************************************************************************
 * Args:                                                                        *
-*     ContactList *cl: a lista que esta a ser trabalhada                       *
+*     HashedContactList *cl: a lista que esta a ser trabalhada                 *
+*     DomainHashTable *dt: a hashtable que esta a ser trabalhada               *
 *                                                                              *
 * Errors:                                                                      *
 *     Sao levantados erros caso nao seja possivel ler do stdin, o input esteja *
@@ -52,7 +53,7 @@ void command_add_contact(HashedContactList *cl, DomainHashTable *dt);
 *                                                                              *
 ********************************************************************************
 * Args:                                                                        *
-*     ContactList *cl: a lista que esta a ser trabalhada                       *
+*     HashedContactList *cl: a lista que esta a ser trabalhada                 *
 *******************************************************************************/
 void command_print_contact_list(HashedContactList *cl);
 
@@ -62,7 +63,7 @@ void command_print_contact_list(HashedContactList *cl);
 *                                                                              *
 ********************************************************************************
 * Args:                                                                        *
-*     ContactList *cl: a lista que esta a ser trabalhada                       *
+*     HashedContactList *cl: a lista que esta a ser trabalhada                 *
 *                                                                              *
 * Errors:                                                                      *
 *     Sao levantados erros caso nao seja possivel ler do stdin, o input esteja *
@@ -77,7 +78,8 @@ void command_find_contact(HashedContactList *cl);
 *                                                                              *
 ********************************************************************************
 * Args:                                                                        *
-*     ContactList *cl: a lista que esta a ser trabalhada                       *
+*     HashedContactList *cl: a lista que esta a ser trabalhada                 *
+*     DomainHashTable *dt: a hashtable que esta a ser trabalhada               *
 *                                                                              *
 * Errors:                                                                      *
 *     Sao levantados erros caso nao seja possivel ler do stdin, o input esteja *
@@ -93,6 +95,7 @@ void command_remove_contact(HashedContactList *cl, DomainHashTable *dt);
 ********************************************************************************
 * Args:                                                                        *
 *     ContactList *cl: a lista que esta a ser trabalhada                       *
+*     DomainHashTable *dt: a hashtable que esta a ser trabalhada               *
 *                                                                              *
 * Errors:                                                                      *
 *     Sao levantados erros caso nao seja possivel ler do stdin, o input esteja *
@@ -107,7 +110,7 @@ void command_change_email(HashedContactList *cl, DomainHashTable *dt);
 *                                                                              *
 ********************************************************************************
 * Args:                                                                        *
-*     ContactList *cl: a lista que esta a ser trabalhada                       *
+*     DomainHashTable *dt: a hashtable que esta a ser trabalhada               *
 *                                                                              *
 * Errors:                                                                      *
 *     Sao levantados erros caso nao seja possivel ler do stdin ou o input      *

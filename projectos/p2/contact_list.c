@@ -6,6 +6,7 @@
 *                                                 Pedro Godinho - 93608 - LETI *
 ********************************************************************************
 * Este fincheiro contem a implementacao das funcoes definidas em               *
+* contact_list.h                                                               *
 *******************************************************************************/
 
 #include <stdlib.h>
@@ -27,6 +28,7 @@ HashedContactList *make_contact_list() {
     cl->head = NULL;
     cl->tail = NULL;
     cl->hashtable = malloc(sizeof(Node) * CL_SIZE);
+    /* Inicializar cada ponteiro como NULL */
     for (i = 0; i < CL_SIZE; i++) 
         *(cl->hashtable + i) = NULL;
     return cl;
@@ -58,22 +60,20 @@ void destroy_contact_list(HashedContactList *cl) {
 void append_to_contact_list(HashedContactList *cl, Contact c) {
     int hash_index;
 
-    /* gerir doubly linked list */
-    /* a nova tail e criada e recebe os valores necessarios */
+    /****** gerir doubly linked list ******/
     Node *new_tail = malloc(sizeof(Node));
     new_tail->next = NULL;
     new_tail->previous = cl->tail;
     new_tail->c = c;
 
-    /* gerir a doubly linked list */
-    if (!cl->head) /* se a lista e vazia, a nova tail tambem e a head */
+    if (!cl->head) /* lista vazia */
         cl->head = new_tail;
-    else 
-        cl->tail->next = new_tail; /* caso contrario, atualizar a tail antiga */
+    else           /* lista nao vazia */
+        cl->tail->next = new_tail;
     
     cl->tail = new_tail;
 
-    /* gerir hash table */
+    /****** gerir hash table ******/
     new_tail->next_collision = NULL;
     hash_index = hash(new_tail->c.name) % CL_SIZE;
 
