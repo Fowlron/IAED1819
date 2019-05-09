@@ -14,7 +14,6 @@
 #define CONTACT_MANAGER_H
 
 #include "contact_list.h"
-#include "domain_table.h"
 
 #define MAX_STR_NAME 1023  /* tamanho maximo de cada nome */
 #define MAX_STR_EMAIL 511  /* tamanho maximo de cada email */
@@ -43,7 +42,7 @@ void get_domain_from_email(char *email, char *domain);
 *     Sao levantados erros caso nao seja possivel ler do stdin, o input esteja *
 * mal formatado, ou ja exista um nome com o contacto que se esta a tentar      *
 *******************************************************************************/
-void command_add_contact(HashedContactList *cl, DomainHashTable *dt);
+void command_add_contact(ContactList *cl);
 
 
 /*******************************************************************************
@@ -54,7 +53,7 @@ void command_add_contact(HashedContactList *cl, DomainHashTable *dt);
 * Args:                                                                        *
 *     ContactList *cl: a lista que esta a ser trabalhada                       *
 *******************************************************************************/
-void command_print_contact_list(HashedContactList *cl);
+void command_print_contact_list(ContactList *cl);
 
 
 /*******************************************************************************
@@ -68,7 +67,7 @@ void command_print_contact_list(HashedContactList *cl);
 *     Sao levantados erros caso nao seja possivel ler do stdin, o input esteja *
 *     mal formatado, ou nao existir nenhum contacto com o nome dado            *
 *******************************************************************************/
-void command_find_contact(HashedContactList *cl);
+void command_find_contact(ContactList *cl);
 
 
 /*******************************************************************************
@@ -83,7 +82,7 @@ void command_find_contact(HashedContactList *cl);
 *     Sao levantados erros caso nao seja possivel ler do stdin, o input esteja *
 *     mal formatado, ou nao existir nenhum contacto com o nome dado            *
 *******************************************************************************/
-void command_remove_contact(HashedContactList *cl, DomainHashTable *dt);
+void command_remove_contact(ContactList *cl);
 
 
 /*******************************************************************************
@@ -98,7 +97,7 @@ void command_remove_contact(HashedContactList *cl, DomainHashTable *dt);
 *     Sao levantados erros caso nao seja possivel ler do stdin, o input esteja *
 *     mal formatado, ou nao existir nenhum contacto com o nome dado            *
 *******************************************************************************/
-void command_change_email(HashedContactList *cl, DomainHashTable *dt);
+void command_change_email(ContactList *cl);
 
 
 /*******************************************************************************
@@ -113,6 +112,6 @@ void command_change_email(HashedContactList *cl, DomainHashTable *dt);
 *     Sao levantados erros caso nao seja possivel ler do stdin ou o input      *
 *     esteja mal formatado.                                                    *
 *******************************************************************************/
-void command_count_email_domain(DomainHashTable *dt);
+void command_count_email_domain(ContactList *cl);
 
 #endif

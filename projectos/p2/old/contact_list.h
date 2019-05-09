@@ -13,8 +13,6 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
-#define CL_SIZE 1009 /* size da contactlist hashtable - primo proximo de 1000 */
-
 
 /*******************************************************************************
 * Estrutura Contact:                                                           *
@@ -33,7 +31,7 @@ typedef struct {
 * contacto (o valor de cada elo).                                              *
 *******************************************************************************/
 typedef struct struct_node {
-    struct struct_node *next, *previous, *next_collision;
+    struct struct_node *next, *previous;
     Contact c;
 } Node;
 
@@ -44,8 +42,8 @@ typedef struct struct_node {
 * primeiro e ultimo elementos da lista.                                        *
 *******************************************************************************/
 typedef struct {
-    struct struct_node *head, *tail, **hashtable;
-} HashedContactList;
+    struct struct_node *head, *tail;
+} ContactList;
 
 
 /*******************************************************************************
@@ -65,7 +63,7 @@ void print_contact(Contact c);
 * Returns:                                                                     *
 *     ContactList*: a lista vazia criada                                       *
 *******************************************************************************/
-HashedContactList *make_contact_list();
+ContactList *make_contact_list();
 
 
 /*******************************************************************************
@@ -85,7 +83,7 @@ void destroy_node(Node *node);
 * Args:                                                                        *
 *     ContactList *cl: o ponteiro para a lista a destruir                      *
 *******************************************************************************/
-void destroy_contact_list(HashedContactList *cl);
+void destroy_contact_list(ContactList *cl);
 
 
 /*******************************************************************************
@@ -96,10 +94,10 @@ void destroy_contact_list(HashedContactList *cl);
 *     ContactList *cl: a lista a qual adicionar o contacto                     *
 *     Contact c: o contacto a adicionar                                        *
 *******************************************************************************/
-void append_to_contact_list(HashedContactList *cl, Contact c);
+void append_to_contact_list(ContactList *cl, Contact c);
 
-/* TODO */
-void remove_node_from_list(HashedContactList *cl, char *name);
+
+void remove_node_from_list(ContactList *cl, char *name);
 
 
 /*******************************************************************************
@@ -114,8 +112,7 @@ void remove_node_from_list(HashedContactList *cl, char *name);
 *     Contact*: um ponteiro para o contacto encontrado (ou NULL se nao         *
 *               existir                                                        *
 *******************************************************************************/
-Node *get_node_by_name(HashedContactList *cl, char *name);
+Node *get_node_by_name(ContactList *cl, char *name);
 
-void print_hash_table(HashedContactList *cl);
 
 #endif

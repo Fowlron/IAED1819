@@ -13,6 +13,7 @@
 #include <string.h>
 
 #include "contact_manager.h"
+#include "domain_table.h"
 
 
 void print_contact(Contact c) {
@@ -20,10 +21,14 @@ void print_contact(Contact c) {
 }
 
 
-ContactList *make_contact_list() {
-    ContactList *cl = malloc(sizeof(ContactList));
+HashedContactList *make_contact_list() {
+    int i;
+    HashedContactList *cl = malloc(sizeof(HashedContactList));
     cl->head = NULL;
     cl->tail = NULL;
+    cl->hashtable = malloc(sizeof(Node) * CL_SIZE);
+    for (i = 0; i < CL_SIZE; i++) 
+        *(cl->hashtable + i) = NULL;
     return cl;
 }
 
@@ -36,42 +41,56 @@ void destroy_node(Node *node) {
 }
 
 
-void destroy_contact_list(ContactList *cl) {
+void destroy_contact_list(HashedContactList *cl) {
     Node *next;
-    while (cl->head != NULL) {
+    while (cl->head) {
         /* guardar o proximo elemento para usar depois de libertar a head */
         next = cl->head->next;
 
         destroy_node(cl->head);
         cl->head = next;
     }
+    free(cl->hashtable);
     free(cl);
 }
 
 
-void append_to_contact_list(ContactList *cl, Contact c) {
+void append_to_contact_list(HashedContactList *cl, Contact c) {
+    int hash_index;
+
+    /* gerir doubly linked list */
     /* a nova tail e criada e recebe os valores necessarios */
     Node *new_tail = malloc(sizeof(Node));
     new_tail->next = NULL;
     new_tail->previous = cl->tail;
     new_tail->c = c;
 
-    if (cl->head == NULL) /* se a lista e vazia, a nova tail tambem e a head */
+    /* gerir a doubly linked list */
+    if (!cl->head) /* se a lista e vazia, a nova tail tambem e a head */
         cl->head = new_tail;
-    else /* caso contrario, atualizar a tail antiga */
-        cl->tail->next = new_tail;
+    else 
+        cl->tail->next = new_tail; /* caso contrario, atualizar a tail antiga */
     
     cl->tail = new_tail;
+
+    /* gerir hash table */
+    new_tail->next_collision = NULL;
+    hash_index = hash(new_tail->c.name) % CL_SIZE;
+
+    new_tail->next_collision = *(cl->hashtable + hash_index);
+    *(cl->hashtable + hash_index) = new_tail;
 }
 
 
-void remove_node_from_list(ContactList *cl, char *name) {
+void remove_node_from_list(HashedContactList *cl, char *name) {
+    int hash_index;
+    Node *current;
     Node *node = get_node_by_name(cl, name);
 
     /* remover o node da lista, alterando o next e previous dos nodes circundantes */
-    if (node->previous != NULL)
+    if (node->previous)
         node->previous->next = node->next;
-    if (node->next != NULL)
+    if (node->next)
         node->next->previous = node->previous;
 
     /* se o node for a head ou a tail, atualizar a estrutura da lista */
@@ -80,18 +99,44 @@ void remove_node_from_list(ContactList *cl, char *name) {
     if (node == cl->tail)
         cl->tail = node->previous;
 
+    /* remover da hashtable */
+    hash_index = hash(name) % CL_SIZE;
+
+    current = *(cl->hashtable + hash_index);
+    if (strcmp(current->c.name, name) == 0) {
+        *(cl->hashtable + hash_index) = current->next_collision;
+    } else {
+        for (; strcmp(current->next_collision->c.name, name) != 0; current = current->next_collision);
+        current->next_collision = current->next_collision->next_collision;
+    }
+
     /* libertar a memoria do node */
     destroy_node(node);
     return;
 }
 
 
-Node *get_node_by_name(ContactList *cl, char *name) {
+Node *get_node_by_name(HashedContactList *cl, char *name) {
     Node *current;
-    /* percorrer a lista, e retornar um ponteiro para o contacto, caso encontrado */
-    for (current = cl->head; current != NULL; current = current->next) {
-        if (strcmp(current->c.name, name) == 0)
-            return current;
+    int hash_index = hash(name) % CL_SIZE;
+    
+    for (current = *(cl->hashtable + hash_index); 
+         current && strcmp(current->c.name, name); 
+         current = current->next_collision);
+    return current;
+}
+
+
+void print_hash_table(HashedContactList *cl) {
+    int i;
+    Node *current;
+    for (i = 0; i < CL_SIZE; i++) {
+        if (*(cl->hashtable + i))
+            printf("Hash: %d | ", i);
+        for (current = *(cl->hashtable + i); current; current = current->next_collision) {
+            printf("%s ", current->c.name);
+        }
+        if (*(cl->hashtable + i))
+            printf("\n");
     }
-    return NULL;
 }
