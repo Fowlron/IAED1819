@@ -17,9 +17,9 @@
 
 
 /*******************************************************************************
-* Estrutura Contact:                                                           *
-* Esta estrutura representa cada contacto na lista, tendo tres vetores de      *
-* caracteres para representar o nome, email, e telefone de cada contacto.      *
+* Estrutura Contact:
+* Esta estrutura representa cada contacto na lista, tendo tres vetores de
+* caracteres para representar o nome, email, e telefone de cada contacto.
 *******************************************************************************/
 typedef struct {
     char *name, *email, *tel;
@@ -27,11 +27,11 @@ typedef struct {
 
 
 /*******************************************************************************
-* Estrutura Node:                                                              *
-* Esta estrutura representa um elo na lista duplamente ligada e na hashtable,  *
-* tendo um ponteiro para o elemento seguinte e para o elemento anterior na     *
-* linked list, e um ponteiro para o proximo node que partilha a sua hash na    *
-* hashtable, bem como o contacto.                                              *
+* Estrutura Node:
+* Esta estrutura representa um elo na lista duplamente ligada e na hashtable,
+* tendo um ponteiro para o elemento seguinte e para o elemento anterior na
+* linked list, e um ponteiro para o proximo node que partilha a sua hash na
+* hashtable, bem como o contacto.
 *******************************************************************************/
 typedef struct struct_node {
     struct struct_node *next, *previous, *next_collision;
@@ -40,10 +40,10 @@ typedef struct struct_node {
 
 
 /*******************************************************************************
-* Estrutura HashedContactList:                                                 *
-* Esta estrutura representa a lista duplamente ligada com uma hashtable, tendo *
-* ponteiros para o primeiro e ultimo elementos da lista, bem como para a       *
-* hashtable.                                                                   *
+* Estrutura HashedContactList:
+* Esta estrutura representa a lista duplamente ligada com uma hashtable, tendo
+* ponteiros para o primeiro e ultimo elementos da lista, bem como para a
+* hashtable.
 *******************************************************************************/
 typedef struct {
     struct struct_node *head, *tail, **hashtable;
@@ -51,79 +51,79 @@ typedef struct {
 
 
 /*******************************************************************************
-* Funcao que, dado um contacto, o escreve para o stdout (nome email telefone). *
-*                                                                              *
+* Funcao que, dado um contacto, o escreve para o stdout (nome email telefone).
+*
 ********************************************************************************
-* Args:                                                                        *
-*     Contact c: o contacto a escrever                                         *
+* Args:
+*     Contact c: o contacto a escrever
 *******************************************************************************/
 void print_contact(Contact c);
 
 
 /*******************************************************************************
-* Funcao que gera uma lista de contactos duplamente ligada com uma hashtable   *
-* vazia.                                                                       *
-*                                                                              *
+* Funcao que gera uma lista de contactos duplamente ligada com uma hashtable
+* vazia.
+*
 ********************************************************************************
-* Returns:                                                                     *
-*     ContactList*: a lista criada                                             *
+* Returns:
+*     ContactList*: a lista criada
 *******************************************************************************/
 HashedContactList *make_contact_list();
 
 
 /*******************************************************************************
-* Funcao que liberta toda a memoria relacionada com um Node.                   *
-*                                                                              *
+* Funcao que liberta toda a memoria relacionada com um Node.
+*
 ********************************************************************************
-* Args:                                                                        *
-*     Node *node: ponteiro para o node a destruir                              *
+* Args:
+*     Node *node: ponteiro para o node a destruir
 *******************************************************************************/
 void destroy_node(Node *node);
 
 
 /*******************************************************************************
-* Funcao que liberta toda a memoria relacionada com uma lista de contactos.    *
-*                                                                              *
+* Funcao que liberta toda a memoria relacionada com uma lista de contactos.
+*
 ********************************************************************************
-* Args:                                                                        *
-*     HashedContactList *cl: o ponteiro para a lista a destruir                *
+* Args:
+*     HashedContactList *cl: o ponteiro para a lista a destruir
 *******************************************************************************/
 void destroy_contact_list(HashedContactList *cl);
 
 
 /*******************************************************************************
-* Funcao que adiciona um contacto ao fim de uma lista de contactos.            *
-*                                                                              *
+* Funcao que adiciona um contacto ao fim de uma lista de contactos.
+*
 ********************************************************************************
-* Args:                                                                        *
-*     HashedContactList *cl: a lista a qual adicionar o contacto               *
-*     Contact c: o contacto a adicionar                                        *
+* Args:
+*     HashedContactList *cl: a lista a qual adicionar o contacto
+*     Contact c: o contacto a adicionar
 *******************************************************************************/
 void append_to_contact_list(HashedContactList *cl, Contact c);
 
 
 /*******************************************************************************
-* Funcao que remove um contacto de uma lista de contactos.                     *
-*                                                                              *
+* Funcao que remove um contacto de uma lista de contactos.
+*
 ********************************************************************************
-* Args:                                                                        *
-*     HashedContactList *cl: a lista a qual adicionar o contacto               *
-*     Contact c: o contacto a adicionar                                        *
+* Args:
+*     HashedContactList *cl: a lista a qual adicionar o contacto
+*     Contact c: o contacto a adicionar
 *******************************************************************************/
 void remove_node_from_list(HashedContactList *cl, char *name);
 
 
 /*******************************************************************************
-* Funcao que encontra um contacto atraves do seu nome.                         *
-*                                                                              *
+* Funcao que encontra um contacto atraves do seu nome.
+*
 ********************************************************************************
-* Args:                                                                        *
-*     HashedContactList *cl: a lista na qual procurar o contacto               *
-*     char *name: o nome pelo qual procurar                                    *
-*                                                                              *
-* Returns:                                                                     *
-*     Contact*: um ponteiro para o contacto encontrado (ou NULL se nao         *
-*               existir nenhum com o nome dado)                                *
+* Args:
+*     HashedContactList *cl: a lista na qual procurar o contacto
+*     char *name: o nome pelo qual procurar
+*
+* Returns:
+*     Contact*: um ponteiro para o contacto encontrado (ou NULL se nao
+*               existir nenhum com o nome dado
 *******************************************************************************/
 Node *get_node_by_name(HashedContactList *cl, char *name);
 
