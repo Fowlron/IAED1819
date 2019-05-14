@@ -26,23 +26,37 @@ else
     echo "Program successfully compiled..."
 fi
 
+if  ( which `cut <<<time -f1 -d\ ` >/dev/null 2>&1 ) ; then
+    time_cmd="time"
+fi
+
+if  [ -f /usr/bin/time ] ; then
+    if /usr/bin/time -f "%e%M" echo 2>/dev/null >/dev/null; then
+        time_cmd='/usr/bin/time'
+        time_args=(-f "Resources: real:%es mem:%MKB")
+    fi
+fi
+
+okay=1
 for test_in in `ls -rS ${test_dir}/*.in`; do
     echo "Test:" "${test_in}"
     test_out="${test_in%.in}.out"
     stamp="${RANDOM}${RANDOM}"
     student_out=/tmp/in_${stamp}
-    ./${prog_name} <${test_in} >${student_out}
+    ( ${time_cmd} "${time_args[@]}" ./${prog_name} <${test_in} >${student_out} )
     rv_student=$?
 
     if [ ! -f "${student_out}" ]; then
         echo "ERROR: The output of the exercise was not created (file ${student_out})!"
-        exit 1
+        okay=0
+        break
     fi
 
     if [ ${rv_student} != 0 ]; then
         echo "ERROR: Program did not return 0!"
         rm -f ${student_out}
-        exit 1
+        okay=0
+        break
     else
         echo "Program successfully ran..."
     fi
@@ -55,8 +69,15 @@ for test_in in `ls -rS ${test_dir}/*.in`; do
         echo "Test ${test_in} PASSED!"
     else
         echo "Test ${test_in} FAILURE!"
-        exit 1
+        okay=0
+        break
     fi
 done
+if [ ${okay} == 1 ]; then
+    echo "+++++++++++++++++++"
+    echo "+All Tests PASSED!+"
+    echo "+++++++++++++++++++"
+fi
 
+rm -f ${student_out}
 rm -f ${prog_name}
