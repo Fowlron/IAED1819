@@ -125,3 +125,18 @@ Node *get_node_by_name(HashedContactList *cl, char *name) {
          current = current->next_collision);
     return current;
 }
+
+
+void print_hash_table(HashedContactList *cl) {
+    int i;
+    Node *current;
+    for (i = 0; i < CL_SIZE; i++) {
+        if (*(cl->hashtable + i))
+            printf("Hash: %d | ", i);
+        for (current = *(cl->hashtable + i); current; current = current->next_collision) {
+            printf("%s ", current->c.name);
+        }
+        if (*(cl->hashtable + i))
+            printf("\n");
+    }
+}
